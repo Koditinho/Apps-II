@@ -11,11 +11,11 @@ Bem-vindo!
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const s = StyleSheet.create({
+card: {
+backgroundColor: '#61dafb',
+padding: 16,
+borderRadius: 8,
+fontSize: 14,
+},
 });
