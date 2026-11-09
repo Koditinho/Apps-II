@@ -1,0 +1,33 @@
+import { createContext, useContext, useState } from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
+const AuthContext = createContext();
+function Login() {
+const { login } = useContext(AuthContext);
+const [nome, setNome] = useState('');
+return (
+<View>
+<TextInput value={nome} onChangeText={setNome} />
+<Button title="Entrar" onPress={() => login(nome)} />
+</View>
+);
+}
+
+function Home() {
+const { usuario, logout } = useContext(AuthContext);
+return (
+<View>
+<Text>Bem-vindo, {usuario.nome}</Text>
+<Button title="Sair" onPress={logout} />
+</View>
+);
+}
+export default function App() {
+const [usuario, setUsuario] = useState(null);
+const login = (nome) => setUsuario({ nome });
+const logout = () => setUsuario(null);
+return (
+<AuthContext.Provider value={{ usuario, login, logout }}>
+{usuario ? <Home /> : <Login />}
+</AuthContext.Provider>
+);
+}

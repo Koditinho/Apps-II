@@ -1,0 +1,30 @@
+import { createContext, useContext, useState } from 'react';
+import { View, Text, Button } from 'react-native';
+const TemaContext = createContext();
+function Header() {
+const { texto } = useContext(TemaContext);
+return <Text style={{ color: texto }}>Meu App</Text>;
+}
+function Corpo() {
+const { fundo, texto, alternarTema } = useContext(TemaContext);
+return (
+<View style={{ backgroundColor: fundo }}>
+<Text style={{ color: texto }}>Corpo</Text>
+<Button title="Alternar" onPress={alternarTema} />
+</View>
+);
+}
+export default function App() {
+const [tema, setTema] = useState('claro');
+const alternarTema = () => setTema((t) => (t === 'claro' ? 'escuro' :
+'claro'));
+const fundo = tema === 'claro' ? '#fff' : '#000';
+const texto = tema === 'claro' ? '#000' : '#fff';
+
+return (
+<TemaContext.Provider value={{ fundo, texto, alternarTema }}>
+<Header />
+<Corpo />
+</TemaContext.Provider>
+);
+}

@@ -1,0 +1,49 @@
+import { createContext, useContext, useState } from 'react';
+import { View, Text, Button, FlatList } from 'react-native';
+const CarrinhoContext = createContext();
+const produtos = [
+{ id: 1, nome: 'Maçã', preco: 2 },
+{ id: 2, nome: 'Pão', preco: 5 },
+];
+function ListaProdutos() {
+const { adicionar } = useContext(CarrinhoContext);
+return (
+<FlatList
+data={produtos}
+keyExtractor={(item) => String(item.id)}
+renderItem={({ item }) => (
+<View>
+<Text>{item.nome} - R$ {item.preco}</Text>
+<Button title="Adicionar" onPress={() => adicionar(item)} />
+</View>
+)}
+/>
+);
+}
+function Carrinho() {
+const { itens, remover, total } = useContext(CarrinhoContext);
+return (
+<View>
+{itens.map((item, i) => (
+
+<View key={i}>
+<Text>{item.nome}</Text>
+<Button title="Remover" onPress={() => remover(i)} />
+</View>
+))}
+<Text>Total: R$ {total}</Text>
+</View>
+);
+}
+export default function App() {
+const [itens, setItens] = useState([]);
+const adicionar = (item) => setItens([...itens, item]);
+const remover = (index) => setItens(itens.filter((_, i) => i !== index));
+const total = itens.reduce((s, i) => s + i.preco, 0);
+return (
+<CarrinhoContext.Provider value={{ itens, adicionar, remover, total }}>
+<ListaProdutos />
+<Carrinho />
+</CarrinhoContext.Provider>
+);
+}
